@@ -3,6 +3,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelectorAll('.nav-menu a');
     const form = document.querySelector('.contact-form');
     const progressBar = document.querySelector('.scroll-progress');
+    const isHomePage = window.location.pathname.endsWith('index.html') || 
+                       window.location.pathname === '/' || 
+                       window.location.pathname.endsWith('/');
 
     window.addEventListener('scroll', function() {
         // Navbar shadow/scale effect
@@ -27,34 +30,31 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Scroll Spy (Active Nav Link)
-        let current = '';
-        const sections = document.querySelectorAll('section');
-        
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            if (scrollY >= (sectionTop - 300)) {
-                current = section.getAttribute('id');
-            }
-        });
+        if (isHomePage) {
+            let current = '';
+            const sections = document.querySelectorAll('section');
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 300)) {
+                    current = section.getAttribute('id');
+                }
+            });
 
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href').includes(current)) {
-                link.classList.add('active');
-            }
-        });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        }
     });
 
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
             
-            // Check if we are currently on the home page (index.html or root)
-            const isHomePage = window.location.pathname.endsWith('index.html') || 
-                               window.location.pathname === '/' || 
-                               window.location.pathname.endsWith('/');
-
             // 1. Internal link on current page (#section)
             if (href.startsWith('#')) {
                 e.preventDefault();

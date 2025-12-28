@@ -10,6 +10,7 @@ Stack
 
 Key Files
 - `index.html`
+- `projects.html`
 - `experience.html`
 - `styles.css`
 - `script.js`
