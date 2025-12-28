@@ -294,7 +294,7 @@ textarea:focus-visible {
     }
 
     .hero {
-        padding-top: 120px;
+        padding-top: clamp(96px, 14vh, 120px);
         text-align: center;
         height: auto;
         min-height: 100dvh;
@@ -435,11 +435,12 @@ textarea:focus-visible {
 /* Hero Section */
 .hero {
     min-height: 100vh;
-    min-height: 100dvh; 
+    min-height: 100dvh;
+    height: 100dvh;
     display: flex;
     align-items: center;
-    padding-top: 140px; 
-    padding-bottom: 60px;
+    padding-top: clamp(96px, 12vh, 140px);
+    padding-bottom: clamp(32px, 8vh, 60px);
     position: relative;
     overflow: hidden;
     background: var(--dark-bg);
@@ -448,7 +449,7 @@ textarea:focus-visible {
 .hero .container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4rem;
+    gap: clamp(2rem, 6vw, 4rem);
     align-items: center;
     position: relative;
     z-index: 2;
@@ -468,7 +469,7 @@ textarea:focus-visible {
 
 @media (max-width: 768px) {
     .hero {
-        padding-top: 120px;
+        padding-top: clamp(96px, 14vh, 120px);
         text-align: center;
         /* Allow height to grow if content is tall */
         height: auto;
@@ -531,7 +532,7 @@ textarea:focus-visible {
 .hero-subtitle {
     font-size: 1.25rem;
     color: rgba(255, 255, 255, 0.8);
-    margin-bottom: 2.5rem;
+    margin-bottom: clamp(1.25rem, 3vh, 2rem);
     max-width: 500px;
 }
 
@@ -540,7 +541,7 @@ textarea:focus-visible {
     color: #cbd5e1;
     font-size: 1rem;
     max-width: 620px;
-    margin-bottom: 2rem;
+    margin-bottom: clamp(1rem, 2.5vh, 1.75rem);
 }
 
 .page-summary {
