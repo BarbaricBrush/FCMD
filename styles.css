@@ -30,6 +30,14 @@ body {
     overflow-x: hidden;
 }
 
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--secondary-color);
+    outline-offset: 3px;
+}
+
 .scroll-progress {
     position: fixed;
     top: 0;
@@ -527,6 +535,19 @@ body {
     max-width: 500px;
 }
 
+.hero-summary,
+.page-summary {
+    color: #cbd5e1;
+    font-size: 1rem;
+    max-width: 620px;
+    margin-bottom: 2rem;
+}
+
+.page-summary {
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .hero-buttons {
     display: flex;
     gap: 1rem;
@@ -781,6 +802,30 @@ body {
 
 .project-link:hover {
     color: var(--white);
+}
+
+.faq {
+    padding: 6rem 0;
+    background: var(--dark-bg);
+    position: relative;
+}
+
+.faq-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.faq-item h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+    color: var(--white);
+}
+
+.faq-item p {
+    color: #94a3b8;
+    font-size: 0.95rem;
+    line-height: 1.7;
 }
 
 .section-title {
