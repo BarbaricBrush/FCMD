@@ -436,11 +436,11 @@ textarea:focus-visible {
 .hero {
     min-height: 100vh;
     min-height: 100dvh;
-    height: 100dvh;
+    height: auto;
     display: flex;
     align-items: flex-start;
     padding-top: clamp(160px, 22vh, 200px);
-    padding-bottom: clamp(32px, 8vh, 60px);
+    padding-bottom: clamp(60px, 8vh, 80px);
     position: relative;
     overflow: hidden;
     background: var(--dark-bg);
