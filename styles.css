@@ -439,7 +439,7 @@ textarea:focus-visible {
     height: 100dvh;
     display: flex;
     align-items: center;
-    padding-top: clamp(96px, 12vh, 140px);
+    padding-top: clamp(160px, 22vh, 200px);
     padding-bottom: clamp(32px, 8vh, 60px);
     position: relative;
     overflow: hidden;
@@ -469,7 +469,8 @@ textarea:focus-visible {
 
 @media (max-width: 768px) {
     .hero {
-        padding-top: clamp(96px, 14vh, 120px);
+        padding-top: 180px;
+        align-items: flex-start;
         text-align: center;
         /* Allow height to grow if content is tall */
         height: auto;
@@ -1287,7 +1288,7 @@ textarea:focus-visible {
 
 /* Timeline Styles */
 .page-header {
-    padding: 8rem 0 4rem;
+    padding: 12rem 0 6rem;
     background: var(--dark-bg);
     position: relative;
     text-align: center;
