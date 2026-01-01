@@ -1652,14 +1652,33 @@ textarea:focus-visible {
 [data-theme="high-contrast"] .service-card, 
 [data-theme="high-contrast"] .highlight-card { border: 2px solid #fff; background: #000; }
 
-/* Color Blind Safe (Blue/Orange - Deuteranopia/Protanopia Friendly) */
-[data-theme="color-blind"] {
+/* Red/Green Blind (Protanopia & Deuteranopia) - Focus on Blue/Yellow */
+[data-theme="protanopia"],
+[data-theme="deuteranopia"] {
     --primary-color: #0077bb; /* Accessible Blue */
-    --secondary-color: #ee7733; /* Orange */
-    --accent-color: #009988; /* Teal */
-    --dark-bg: #0a0a0a;
-    --white: #f0f0f0;
-    --gradient-1: linear-gradient(135deg, #0077bb 0%, #33bbee 100%);
+    --secondary-color: #eab308; /* Yellow */
+    --accent-color: #ee7733; /* Orange */
+    --gradient-1: linear-gradient(135deg, #0077bb 0%, #ee7733 100%);
+    --gradient-2: linear-gradient(135deg, #ee7733 0%, #0077bb 100%);
+}
+
+/* Blue/Yellow Blind (Tritanopia) - Focus on Red/Teal */
+[data-theme="tritanopia"] {
+    --primary-color: #dc2626; /* Red */
+    --secondary-color: #0d9488; /* Teal */
+    --accent-color: #db2777; /* Pink */
+    --gradient-1: linear-gradient(135deg, #dc2626 0%, #0d9488 100%);
+    --gradient-2: linear-gradient(135deg, #0d9488 0%, #dc2626 100%);
+}
+
+/* Monochrome (Grayscale) */
+[data-theme="monochrome"] {
+    --primary-color: #4b5563; /* Grey */
+    --secondary-color: #9ca3af; /* Light Grey */
+    --accent-color: #ffffff;
+    --dark-bg: #111111;
+    --gradient-1: linear-gradient(135deg, #333 0%, #666 100%);
+    filter: grayscale(100%); /* Force hardware grayscale */
 }
 
 /* A11y Widget */

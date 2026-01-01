@@ -605,10 +605,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // 1. Inject Widget HTML
     const a11yHTML = `
         <div class="a11y-widget">
-            <div class="a11y-menu" id="a11y-menu">
+            <div class="a11y-menu" id="a11y-menu" style="width: 220px;">
                 <button class="a11y-option" data-theme="default">Default (Dark)</button>
                 <button class="a11y-option" data-theme="high-contrast">High Contrast</button>
-                <button class="a11y-option" data-theme="color-blind">Color Blind Safe</button>
+                <div style="height:1px; background:rgba(255,255,255,0.1); margin:4px 0;"></div>
+                <button class="a11y-option" data-theme="protanopia">Protanopia (No Red)</button>
+                <button class="a11y-option" data-theme="deuteranopia">Deuteranopia (No Green)</button>
+                <button class="a11y-option" data-theme="tritanopia">Tritanopia (No Blue)</button>
+                <button class="a11y-option" data-theme="monochrome">Monochromacy</button>
                 
                 <div style="border-top:1px solid rgba(255,255,255,0.1); margin-top:8px; padding-top:8px;">
                     <label style="color:white; font-size:0.9rem; display:flex; align-items:center; gap:10px; cursor:pointer; padding:0 8px;">
