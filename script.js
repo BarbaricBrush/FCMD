@@ -599,4 +599,68 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         loadProjects();
     }
+
+    // --- Accessibility Widget ---
+    
+    // 1. Inject Widget HTML
+    const a11yHTML = `
+        <div class="a11y-widget">
+            <div class="a11y-menu" id="a11y-menu">
+                <button class="a11y-option" data-theme="default">Default (Dark)</button>
+                <button class="a11y-option" data-theme="high-contrast">High Contrast</button>
+                <button class="a11y-option" data-theme="color-blind">Color Blind Safe</button>
+            </div>
+            <button class="a11y-btn" id="a11y-toggle" aria-label="Accessibility Options">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 14.14 14.14"/></svg>
+            </button>
+        </div>
+    `;
+    document.body.insertAdjacentHTML('beforeend', a11yHTML);
+
+    // 2. Logic
+    const a11yToggle = document.getElementById('a11y-toggle');
+    const a11yMenu = document.getElementById('a11y-menu');
+    const themeBtns = document.querySelectorAll('.a11y-option');
+    const html = document.documentElement;
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem('fcmd-theme') || 'default';
+    if (savedTheme !== 'default') {
+        html.setAttribute('data-theme', savedTheme);
+    }
+    updateActiveBtn(savedTheme);
+
+    a11yToggle.addEventListener('click', () => {
+        a11yMenu.classList.toggle('active');
+    });
+
+    themeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const theme = btn.getAttribute('data-theme');
+            
+            // Apply Theme
+            if (theme === 'default') {
+                html.removeAttribute('data-theme');
+            } else {
+                html.setAttribute('data-theme', theme);
+            }
+
+            // Save & UI Update
+            localStorage.setItem('fcmd-theme', theme);
+            updateActiveBtn(theme);
+            a11yMenu.classList.remove('active');
+        });
+    });
+
+    function updateActiveBtn(theme) {
+        themeBtns.forEach(b => {
+            if (b.getAttribute('data-theme') === theme) {
+                b.classList.add('active');
+                b.style.fontWeight = 'bold';
+            } else {
+                b.classList.remove('active');
+                b.style.fontWeight = 'normal';
+            }
+        });
+    }
 });

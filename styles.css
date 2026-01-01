@@ -1629,3 +1629,89 @@ textarea:focus-visible {
         grid-template-columns: 1fr;
     }
 }
+
+/* --- Accessibility Themes --- */
+
+/* High Contrast (Yellow/Black/White) */
+[data-theme="high-contrast"] {
+    --primary-color: #ffff00; /* Yellow */
+    --secondary-color: #ffffff;
+    --accent-color: #ffff00;
+    --dark-bg: #000000;
+    --light-bg: #111111;
+    --text-dark: #ffffff;
+    --text-light: #dddddd;
+    --white: #ffffff;
+    --gradient-1: linear-gradient(135deg, #000 0%, #333 100%);
+    --gradient-2: none;
+    --gradient-3: none;
+}
+/* Ensure links/buttons pop in high contrast */
+[data-theme="high-contrast"] a { color: #ffff00; text-decoration: underline; }
+[data-theme="high-contrast"] .btn-primary { background: #ffff00; color: #000; box-shadow: none; border: 2px solid #fff; }
+[data-theme="high-contrast"] .service-card, 
+[data-theme="high-contrast"] .highlight-card { border: 2px solid #fff; background: #000; }
+
+/* Color Blind Safe (Blue/Orange - Deuteranopia/Protanopia Friendly) */
+[data-theme="color-blind"] {
+    --primary-color: #0077bb; /* Accessible Blue */
+    --secondary-color: #ee7733; /* Orange */
+    --accent-color: #009988; /* Teal */
+    --dark-bg: #0a0a0a;
+    --white: #f0f0f0;
+    --gradient-1: linear-gradient(135deg, #0077bb 0%, #33bbee 100%);
+}
+
+/* A11y Widget */
+.a11y-widget {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 9999;
+}
+
+.a11y-btn {
+    background: var(--primary-color);
+    color: var(--white);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    transition: transform 0.2s;
+}
+.a11y-btn:hover { transform: scale(1.1); }
+
+.a11y-menu {
+    position: absolute;
+    bottom: 60px;
+    left: 0;
+    background: #1e293b;
+    padding: 10px;
+    border-radius: 8px;
+    display: none; /* Hidden by default */
+    flex-direction: column;
+    gap: 8px;
+    width: 180px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+.a11y-menu.active { display: flex; }
+
+.a11y-option {
+    background: none;
+    border: none;
+    color: white;
+    text-align: left;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+.a11y-option:hover { background: rgba(255,255,255,0.1); }
+.a11y-option.active { background: var(--primary-color); }
