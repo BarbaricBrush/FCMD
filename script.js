@@ -111,18 +111,52 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     if (form) {
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
 
-            const formData = new FormData(form);
             const name = form.querySelector('input[type="text"]').value;
             const email = form.querySelector('input[type="email"]').value;
             const phone = form.querySelector('input[type="tel"]').value;
             const message = form.querySelector('textarea').value;
 
-            alert(`Thank you for your message, ${name}! We will get back to you soon at ${email}.`);
+            try {
+                // Insert into Supabase
+                const { data, error } = await supabase
+                    .from('leads')
+                    .insert([
+                        { 
+                            name: name, 
+                            email: email, 
+                            phone: phone, 
+                            message: message,
+                            status: 'new'
+                        }
+                    ]);
 
-            form.reset();
+                if (error) throw error;
+
+                // Success State
+                submitBtn.textContent = 'Message Sent!';
+                submitBtn.style.background = '#22c55e';
+                form.reset();
+                
+                setTimeout(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.style.background = '';
+                    submitBtn.disabled = false;
+                }, 3000);
+
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                alert('There was a problem sending your message. Please try again or email contact@fcmd.com directly.');
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }
         });
     }
 
