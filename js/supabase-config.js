@@ -1,7 +1,6 @@
-
 // Initialize Supabase Client
-const SUPABASE_URL = 'https://zohdrkvdaxyidnwzmcwr.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpvaGRya3ZkYXh5aWRud3ptY3dyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzU3MDI3MjUsImV4cCI6MjA1MTI3ODcyNX0.s0_publishable_ItmA7nn0ozo5COzZIj8'.trim();
+const SUPABASE_URL = 'https://pgllcxxvwspndoglrrqe.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBnbGxjeHh2d3NwbmRvZ2xycnFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcyNTA1NDUsImV4cCI6MjA4MjgyNjU0NX0.SxpvntptsVgSLTWoLDrSCtt9raoyVysZ0xNf9WD2OWU';
 
 // Ensure the global supabase object exists from the CDN
 if (typeof supabase !== 'undefined') {
