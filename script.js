@@ -540,4 +540,63 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+    // --- Dynamic Projects Loader (Supabase) ---
+    const projectsContainer = document.getElementById('public-projects-grid');
+    if (projectsContainer) {
+        async function loadProjects() {
+            if (!window.supabase) {
+                console.warn('Supabase not ready, retrying...');
+                setTimeout(loadProjects, 500);
+                return;
+            }
+
+            try {
+                const { data: projects, error } = await supabase
+                    .from('projects')
+                    .select('*')
+                    .order('display_order', { ascending: true });
+
+                if (error) throw error;
+
+                if (!projects || projects.length === 0) {
+                    projectsContainer.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#64748b;">No projects found yet.</div>';
+                    return;
+                }
+
+                projectsContainer.innerHTML = '';
+                projects.forEach(p => {
+                    const card = document.createElement('div');
+                    card.className = 'highlight-card project-card';
+                    card.style.opacity = '0'; // For animation
+                    
+                    // Create Tags HTML
+                    const tagsHtml = (p.tags || []).map(t => 
+                        `<span style="font-size:0.75rem; background:rgba(255,255,255,0.1); padding:2px 8px; border-radius:12px; margin-right:4px;">${t}</span>`
+                    ).join('');
+
+                    card.innerHTML = `
+                        <div class="project-image-container" style="height:200px; overflow:hidden; border-radius:8px; margin-bottom:1rem; background:#0f172a;">
+                            <img src="${p.image_url}" alt="${p.title}" style="width:100%; height:100%; object-fit:cover; opacity:0.8; transition:opacity 0.3s;">
+                        </div>
+                        <h4 style="margin-top:0;">${p.title}</h4>
+                        <div style="margin-bottom:0.5rem; color:#94a3b8;">${tagsHtml}</div>
+                        <p>${p.description}</p>
+                        <div class="project-meta">
+                            <a href="${p.link || '#'}" class="project-link">View Project →</a>
+                        </div>
+                    `;
+                    projectsContainer.appendChild(card);
+
+                    // Re-trigger animation observer for new elements
+                    observer.observe(card);
+                });
+
+            } catch (err) {
+                console.error('Error loading projects:', err);
+                projectsContainer.innerHTML = '<div style="color:#ef4444; text-align:center;">Failed to load projects.</div>';
+            }
+        }
+        loadProjects();
+    }
 });
