@@ -11,10 +11,30 @@ const logoutBtn = document.getElementById('logout-btn');
 
 // Check Session on Load
 async function checkSession() {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (session) {
-        showDashboard();
-    } else {
+    try {
+        if (!window.supabase) {
+            console.warn('Supabase not ready yet, waiting...');
+            setTimeout(checkSession, 500);
+            return;
+        }
+        
+        const { data: { session }, error } = await window.supabase.auth.getSession();
+        
+        if (error) {
+            console.error('Session check error:', error);
+            showLogin();
+            return;
+        }
+
+        if (session) {
+            console.log('Session found, showing dashboard');
+            showDashboard();
+        } else {
+            console.log('No session, showing login');
+            showLogin();
+        }
+    } catch (err) {
+        console.error('Check session failed:', err);
         showLogin();
     }
 }
@@ -33,19 +53,40 @@ function showDashboard() {
 // Login Handler
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    console.log('Login attempt started...');
+    
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
+    const loginBtn = loginForm.querySelector('button');
+    const originalText = loginBtn.textContent;
+    
+    loginBtn.textContent = 'Signing in...';
+    loginBtn.disabled = true;
     loginError.textContent = '';
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password,
-    });
+    try {
+        if (!window.supabase) {
+            throw new Error('Supabase client not initialized. Check console.');
+        }
 
-    if (error) {
-        loginError.textContent = 'Invalid credentials. Please try again.';
-    } else {
+        const { data, error } = await window.supabase.auth.signInWithPassword({
+            email: email,
+            password: password,
+        });
+
+        if (error) {
+            console.error('Supabase Auth Error:', error);
+            throw error;
+        }
+
+        console.log('Login successful:', data);
         showDashboard();
+
+    } catch (error) {
+        console.error('Login failed:', error);
+        loginError.textContent = error.message || 'Invalid credentials. Please try again.';
+        loginBtn.textContent = originalText;
+        loginBtn.disabled = false;
     }
 });
 
