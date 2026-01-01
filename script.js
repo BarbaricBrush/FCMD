@@ -661,22 +661,22 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Apply Theme
             if (theme === 'default') {
+                // Hard Reset
                 html.removeAttribute('data-theme');
-                // Re-apply custom color if it was selected before
-                if (savedColor) applyCustomColor(savedColor);
+                html.style.removeProperty('--primary-color');
+                html.style.removeProperty('--gradient-1');
+                localStorage.removeItem('fcmd-custom-color');
+                colorPicker.value = '#2563eb'; // Reset picker visual
             } else {
                 html.setAttribute('data-theme', theme);
-                // Remove custom color overrides for high contrast safety
-                if (theme === 'high-contrast') {
-                    html.style.removeProperty('--primary-color');
-                    html.style.removeProperty('--gradient-1');
-                }
+                // Remove custom color overrides so the theme works
+                html.style.removeProperty('--primary-color');
+                html.style.removeProperty('--gradient-1');
             }
 
             // Save & UI Update
             localStorage.setItem('fcmd-theme', theme);
             updateActiveBtn(theme);
-            // Don't close menu immediately so they can see change
         });
     });
 
