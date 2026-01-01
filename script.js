@@ -609,6 +609,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 <button class="a11y-option" data-theme="default">Default (Dark)</button>
                 <button class="a11y-option" data-theme="high-contrast">High Contrast</button>
                 <button class="a11y-option" data-theme="color-blind">Color Blind Safe</button>
+                
+                <div style="border-top:1px solid rgba(255,255,255,0.1); margin-top:8px; padding-top:8px;">
+                    <label style="color:white; font-size:0.9rem; display:flex; align-items:center; gap:10px; cursor:pointer; padding:0 8px;">
+                        <input type="color" id="custom-color-picker" value="#2563eb" style="width:24px; height:24px; border:none; padding:0; background:none; cursor:pointer;">
+                        <span>Tinker's Color</span>
+                    </label>
+                </div>
             </div>
             <button class="a11y-btn" id="a11y-toggle" aria-label="Accessibility Options">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 14.14 14.14"/></svg>
@@ -621,13 +628,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const a11yToggle = document.getElementById('a11y-toggle');
     const a11yMenu = document.getElementById('a11y-menu');
     const themeBtns = document.querySelectorAll('.a11y-option');
+    const colorPicker = document.getElementById('custom-color-picker');
     const html = document.documentElement;
 
-    // Load saved theme
+    // Load saved theme & color
     const savedTheme = localStorage.getItem('fcmd-theme') || 'default';
+    const savedColor = localStorage.getItem('fcmd-custom-color');
+
     if (savedTheme !== 'default') {
         html.setAttribute('data-theme', savedTheme);
     }
+    
+    // Apply custom color if exists (and not in high-contrast mode which needs strict colors)
+    if (savedColor && savedTheme !== 'high-contrast') {
+        applyCustomColor(savedColor);
+        colorPicker.value = savedColor;
+    }
+
     updateActiveBtn(savedTheme);
 
     a11yToggle.addEventListener('click', () => {
@@ -641,16 +658,47 @@ document.addEventListener('DOMContentLoaded', function() {
             // Apply Theme
             if (theme === 'default') {
                 html.removeAttribute('data-theme');
+                // Re-apply custom color if it was selected before
+                if (savedColor) applyCustomColor(savedColor);
             } else {
                 html.setAttribute('data-theme', theme);
+                // Remove custom color overrides for high contrast safety
+                if (theme === 'high-contrast') {
+                    html.style.removeProperty('--primary-color');
+                    html.style.removeProperty('--gradient-1');
+                }
             }
 
             // Save & UI Update
             localStorage.setItem('fcmd-theme', theme);
             updateActiveBtn(theme);
-            a11yMenu.classList.remove('active');
+            // Don't close menu immediately so they can see change
         });
     });
+
+    // Custom Color Logic
+    colorPicker.addEventListener('input', (e) => {
+        const color = e.target.value;
+        // Switch to default theme if they pick a color (to ensure it shows)
+        html.removeAttribute('data-theme');
+        localStorage.setItem('fcmd-theme', 'default');
+        updateActiveBtn('default');
+
+        applyCustomColor(color);
+        localStorage.setItem('fcmd-custom-color', color);
+    });
+
+    function applyCustomColor(color) {
+        html.style.setProperty('--primary-color', color);
+        // Create a simple gradient: Color -> Lighter Version (mixed with white)
+        // Since we can't easily mix colors in vanilla JS without a lib, we'll fake it or use the same color
+        html.style.setProperty('--gradient-1', `linear-gradient(135deg, ${color} 0%, ${adjustColor(color, 40)} 100%)`);
+    }
+
+    // Simple helper to lighten a hex color
+    function adjustColor(color, amount) {
+        return '#' + color.replace(/^#/, '').replace(/../g, color => ('0'+Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2));
+    }
 
     function updateActiveBtn(theme) {
         themeBtns.forEach(b => {
