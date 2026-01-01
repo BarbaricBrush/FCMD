@@ -545,6 +545,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const projectsContainer = document.getElementById('public-projects-grid');
     if (projectsContainer) {
         async function loadProjects() {
+            // 1. Show Skeleton Loader immediately
+            const skeletonHTML = `
+                <div class="skeleton-card">
+                    <div class="skeleton-pulse skeleton-image"></div>
+                    <div class="skeleton-pulse skeleton-title"></div>
+                    <div class="skeleton-pulse skeleton-tags"></div>
+                    <div class="skeleton-pulse skeleton-text"></div>
+                    <div class="skeleton-pulse skeleton-btn"></div>
+                </div>
+            `.repeat(3); // Show 3 placeholders
+            projectsContainer.innerHTML = skeletonHTML;
+
             if (!window.supabase) {
                 console.warn('Supabase not ready, retrying...');
                 setTimeout(loadProjects, 500);
@@ -564,6 +576,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     return;
                 }
 
+                // Replace skeletons with real content
                 projectsContainer.innerHTML = '';
                 projects.forEach(p => {
                     const card = document.createElement('div');
